@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
-
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 
 export default function TabOneScreen() {
-  const [dogImage, setDogImage] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
+  const [dogImage, setDogImage] = useState<string | null>(null);
 
   const getDog = async () => {
-  try {
-    setLoading(true);
-    const response = await fetch('https://dog.ceo/api/breeds/image/random');
-    const data = await response.json();
-    setDogImage(data.message);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+    try {
+      const response = await fetch("https://dog.ceo/api/breeds/image/random");
+      const data = await response.json();
+      setDogImage(data.message);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getDog();
@@ -28,10 +29,10 @@ export default function TabOneScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>🐶 au au 🐶</Text>
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
+      {dogImage ? (
         <Image source={{ uri: dogImage }} style={styles.image} />
+      ) : (
+        <ActivityIndicator size="large" color="#0000ff" />
       )}
 
       <TouchableOpacity style={styles.button} onPress={getDog}>
@@ -44,14 +45,14 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ADD8E6',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ADD8E6",
     padding: 20,
   },
   title: {
-    fontSize: 22,   
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: "bold",
     marginBottom: 20,
   },
   image: {
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 25,
@@ -69,9 +70,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
